@@ -1,43 +1,45 @@
-* 1. Importa los paquetes necesarios.
+# steps
 
-* 2. Define una función para descargar una imagen desde una URL.
+**1. Importa los paquetes necesarios.**
 
-1. La función downloadImage recibe dos parámetros: url de tipo string, que representa la URL de la imagen a descargar, y wg 
+**2. Define una función para descargar una imagen desde una URL.**
+
+1. La función downloadImage recibe dos parámetros: url de tipo string, que representa la URL de la imagen a descargar, y wg
 de tipo *sync.WaitGroup, que es un puntero a un objeto WaitGroup utilizado para la sincronización de goroutines.
 
-2. La declaración defer wg.Done() se coloca al comienzo de la función utilizando la declaración defer. Esta línea marca la 
-finalización de la goroutine cuando la función downloadImage retorna. Es decir, cuando la función finaliza, se notifica 
+2. La declaración defer wg.Done() se coloca al comienzo de la función utilizando la declaración defer. Esta línea marca la
+finalización de la goroutine cuando la función downloadImage retorna. Es decir, cuando la función finaliza, se notifica
 al WaitGroup que la goroutine ha terminado.
 
-3. Se verifica si la URL no tiene los prefijos "http://" ni "https://". 
-Esto se hace utilizando la función strings.HasPrefix(url, "http://") && strings.HasPrefix(url, "https://"). 
+3. Se verifica si la URL no tiene los prefijos "http://" ni "https://".
+Esto se hace utilizando la función strings.HasPrefix(url, "http://") && strings.HasPrefix(url, "https://").
 Si la condición es falsa, significa que la URL no tiene uno de esos prefijos, lo que indica que la URL es inválida.
 
-3. La función http.Get(url) realiza una solicitud HTTP GET a la URL especificada y devuelve una respuesta HTTP resp y un 
+4. La función http.Get(url) realiza una solicitud HTTP GET a la URL especificada y devuelve una respuesta HTTP resp y un
 posible error err. Esto descarga la imagen desde la URL.
 
-4. Se utiliza la declaración defer resp.Body.Close() para asegurarse de que el cuerpo de la respuesta HTTP se cierre al 
+5. Se utiliza la declaración defer resp.Body.Close() para asegurarse de que el cuerpo de la respuesta HTTP se cierre al
 final de la función. Esto libera los recursos asociados con la respuesta.
 
-5. Se genera el nombre del archivo de destino concatenando "downloaded_" con el nombre del archivo extraído de la URL. 
-Para ello, se utiliza strings.LastIndex(url, "/")+1 para obtener el índice de la última aparición de "/" en la URL y 
-se añade 1 para obtener el índice del primer carácter después de "/". Luego, se utiliza este índice para extraer el 
+6. Se genera el nombre del archivo de destino concatenando "downloaded_" con el nombre del archivo extraído de la URL.
+Para ello, se utiliza strings.LastIndex(url, "/")+1 para obtener el índice de la última aparición de "/" en la URL y
+se añade 1 para obtener el índice del primer carácter después de "/". Luego, se utiliza este índice para extraer el
 nombre del archivo de la URL.
 
-6. Se crea un archivo utilizando os.Create(image_file) para guardar la imagen descargada. Se verifica si se produce algún 
+7. Se crea un archivo utilizando os.Create(image_file) para guardar la imagen descargada. Se verifica si se produce algún
 error y, en caso afirmativo, se muestra un mensaje de error y se retorna desde la función.
-En esa línea de código, el guion bajo ("_") se utiliza para descartar el valor de retorno de io.Copy(), que es el número 
+En esa línea de código, el guion bajo ("_") se utiliza para descartar el valor de retorno de io.Copy(), que es el número
 total de bytes copiados. Esto significa que no estamos interesados en ese valor y simplemente lo estamos descartando.
 
-7. Utilizando defer, se cierra el archivo al final de la función para asegurarse de que se liberen los recursos asociados.
+8. Utilizando defer, se cierra el archivo al final de la función para asegurarse de que se liberen los recursos asociados.
 
-8. Se utiliza io.Copy(file, resp.Body) para copiar el contenido de la respuesta HTTP (la imagen descargada) al archivo. Se verifica si se produce 
+9. Se utiliza io.Copy(file, resp.Body) para copiar el contenido de la respuesta HTTP (la imagen descargada) al archivo. Se verifica si se produce
 algún error y, en caso de que se produzca algún error durante esta operación se muestra un mensaje de error y se retorna desde la función.
 
-En resumen, la función downloadImage es responsable de descargar una imagen desde una URL, guardarla en un archivo y marcar su finalización en el 
+En resumen, la función downloadImage es responsable de descargar una imagen desde una URL, guardarla en un archivo y marcar su finalización en el
 WaitGroup. Esto permite que el programa principal coordine y espere a que todas las descargas se completen antes de continuar.
 
-* 3. Define una función auxiliar readURLsFromFile para leer las URLs desde el archivo.
+**3. Define una función auxiliar readURLsFromFile para leer las URLs desde el archivo.**
 
 1. Se define la función readURLsFromFile que recibe un parámetro filename de tipo string que representa el nombre del archivo a leer. La función devuelve
 un slice de strings que contiene las URLs leídas y un error en caso de que ocurra algún problema.
@@ -64,7 +66,7 @@ utilizando fmt.Errorf("error al leer el archivo: %v", err).
 En resumen, esta función abre un archivo, lee las URLs línea por línea y las almacena en un slice. 
 Luego verifica si hubo algún error durante la lectura y devuelve el slice de URLs junto con un error en caso de ser necesario.
 
-* 4. Crea una función principal main para leer las URLs desde el archivo y realizar la descarga concurrente.
+**4. Crea una función principal main para leer las URLs desde el archivo y realizar la descarga concurrente.**
 
 1. Se llama a la función readURLsFromFile para leer las URLs desde el archivo "img_url". El resultado se guarda en las variables urls y err.
 Si ocurre un error durante la lectura del archivo, se muestra un mensaje de error y se finaliza la ejecución del programa.
@@ -88,10 +90,10 @@ el canal, lo que indica que todas las descargas han finalizado.
 En resumen, el código en la función main lee las URLs desde un archivo, crea goroutines para descargar las imágenes en paralelo, y luego espera a que 
 todas las descargas finalicen antes de imprimir un mensaje de finalización.
 
-
-* 5. Ejecuta el programa y verifica la descarga concurrente de las imágenes.
+**5. Ejecuta el programa y verifica la descarga concurrente de las imágenes.**
 
 Ejecuta el programa con el comando: go run <nombre-archivo.go>
+
 Se realizará la descarga concurrente de las imágenes.
 Verifica los mensajes de registro para confirmar que las descargas se han realizado correctamente.
 Se mostrarán mensajes de error en caso de que ocurra algún problema durante la descarga o si se encuentra una URL inválida.
