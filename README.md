@@ -20,7 +20,7 @@ Escribe un programa en Go que realice la descarga concurrente de imágenes desde
 
 ..
 
-## En conclusion
+## Puntos clave
 
 El programa que desarrollamos es un sistema para descargar imágenes desde URLs proporcionadas en un archivo.
 
