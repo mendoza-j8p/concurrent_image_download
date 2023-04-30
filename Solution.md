@@ -98,5 +98,4 @@ Se realizará la descarga concurrente de las imágenes.
 Verifica los mensajes de registro para confirmar que las descargas se han realizado correctamente.
 Se mostrarán mensajes de error en caso de que ocurra algún problema durante la descarga o si se encuentra una URL inválida.
 
-En resumen, ejecutar el programa y observar la descarga concurrente de las imágenes te permitirá comprobar el funcionamiento correcto de la lógica de descarga,
-la sincronización de goroutines y la captura de errores, asegurando así que las imágenes sean descargadas de manera eficiente y precisa.
+En resumen, ejecutar el programa y observar la descarga concurrente de las imágenes te permitirá comprobar el funcionamiento correcto de la lógica de descarga,la sincronización de goroutines y la captura de errores, asegurando así que las imágenes sean descargadas de manera eficiente y precisa.
