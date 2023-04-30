@@ -2,19 +2,23 @@
 
 **Descripción:**
 
-Escribe un programa en Go que realice la descarga concurrente de imágenes desde una lista de URLs. El programa debe descargar las imágenes de forma concurrente utilizando goroutines y canales.
+Escribe un programa en Go que realice la descarga concurrente de imágenes desde una lista de URLs. El programa utilizará goroutines y sincronización basada en sync.WaitGroup para descargar las imágenes de forma concurrente. Se utilizará el método Done del sync.WaitGroup para marcar la finalización de cada goroutine de descarga.
+
+## Pasos para la descarga concurrente de imágenes
 
 1. Crea una lista de URLs de imágenes que deseas descargar. Puedes tener una lista de URLs predefinida o leerlas desde un archivo o entrada del usuario.
 
 2. Define una función que tome una URL como argumento y descargue la imagen correspondiente utilizando la biblioteca net/http. Puedes utilizar http.Get() para realizar la solicitud HTTP y guardar el contenido de la respuesta en un archivo local.
 
-3. Crea un canal para comunicar el estado de finalización de las descargas entre las goroutines.
+3. Crea un objeto de tipo `sync.WaitGroup` para rastrear el estado de finalización de las descargas.
 
-4. Crea una goroutine por cada URL en la lista y pasa la URL a la función de descarga. Dentro de cada goroutine, después de completar la descarga, envía un mensaje al canal indicando que la descarga se ha completado.
+4. Por cada URL en la lista, incrementa el contador del `sync.WaitGroup` antes de iniciar una goroutine de descarga. Dentro de cada goroutine, después de completar la descarga, llama al método `Done()` del `sync.WaitGroup` para indicar que la descarga se ha completado.
 
-5. Utiliza un select para esperar a que todas las descargas se completen. Por cada mensaje recibido en el canal, incrementa un contador de descargas finalizadas.
+5. Llama al método `Wait()` del `sync.WaitGroup` después de iniciar todas las goroutines para bloquear el programa principal hasta que todas las descargas hayan finalizado.
 
 6. Al finalizar todas las descargas, muestra un mensaje indicando el número total de descargas realizadas.
+
+Este enfoque utiliza el `sync.WaitGroup` para esperar a que todas las goroutines de descarga se completen sin la necesidad de utilizar canales para la comunicación entre goroutines.
 
 ..
 
